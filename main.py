@@ -49,13 +49,19 @@ def applyBox(image,box):
 def main(): 
     prev_image=np.zeros((doc,ngang,3), dtype=np.uint8)
     img=[]
-    path=(__file__)
-    path=path.replace("hieu ung bo vo filter - Copy.py","")
-    filenames = glob.glob(path+"*.png")
+    filepath=(__file__)
+    filepath=filepath.replace(os.path.basename(__file__),"\images")
+    types = ('\*.png', '\*.jpg') # the tuple of file types
+    filenames = []
+    
+    for files in types:
+        filenames.extend(glob.glob(filepath+files))
+        
     for filename in filenames:
         img.append(openAsCV(filename))
+        
     for image in img:
-        rand=4#random.randint(1,4)    
+        rand=random.randint(1,4)    
         #1 Trai qua phai tren xuong duoi
         #2 Trai qua phai duoi len tren
         #3 Phai qua trai tren xuong duoi
@@ -84,7 +90,7 @@ def main():
             temp=applyBox(prev_image,box)
             #đặt image vào ảnh trước theo mask
             dst=putMask(image,temp,mask)
-            cv2.imshow("croped.png", dst)
+            cv2.imshow("image", dst)
             cv2.waitKey(10)    
         for i in range(100):
             #Xác định vị trí tâm xoay hiện tại            
@@ -107,7 +113,7 @@ def main():
             mask=applyPTS(pts)
             temp=applyBox(prev_image,box)
             dst=putMask(temp,image,mask)
-            cv2.imshow("croped.png", dst)
+            cv2.imshow("image", dst)
             cv2.waitKey(10)
         prev_image=image
 main()
